@@ -1,0 +1,26 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+    <main>
+        <% if (resources.length <= 0) { %>
+            <h1>No Resource Found!</h1>
+        <% } else { %>
+            <div class="item-grid">
+                <% resources.forEach(resource => { %>
+                    <div class="item">
+                        <h3>
+                            <%= resource.title %>
+                            <hr>
+                            <h5>Due Date: <%= resource.dueDate %></h5>
+                        </h3>
+                        <p><strong>Author:</strong> <%= resource.author %></p>
+                        <p><strong>Year:</strong> <%= resource.publicationYear %></p>
+                        <p><strong>Genre:</strong> <%= resource.genre %></p>
+                        <div class="buttons">
+                            <a href="/checkout?resourceId=<%= resource._id %>&returned=true" class="btn">Return</a>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+    </main>
+<%- include('../includes/end.ejs') %>

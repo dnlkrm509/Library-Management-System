@@ -1,0 +1,16 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+    <main class="centered">
+        <div class="item-grid">
+            <div class="item">
+                <h3><%= resource.title %></h3>
+                <p><strong>Author:</strong> <%= resource.author %></p>
+                <p><strong>Year:</strong> <%= resource.publicationYear %></p>
+                <p><strong>Genre:</strong> <%= resource.genre %></p>
+                <% if(isAuthenticated) { %>
+                    <%- include('../includes/add-to-borrow.ejs', { resource: resource }) %>
+                <% } %>
+            </div>
+        </div>
+    </main>
+<%- include('../includes/end.ejs') %>

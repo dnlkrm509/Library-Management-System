@@ -1,0 +1,42 @@
+</head>
+<body>
+    
+    <header>
+        <nav>
+            <ul class="list">
+                <li>
+                    <a class="<%= path === '/resources' ? 'active' : '' %>" href="/">Resources</a>
+                </li>
+                <% if (isAuthenticated) { %>
+                    <li>
+                        <a class="<%= path === '/borrow' ? 'active' : '' %>" href="/borrow">Borrowed</a>
+                    </li>
+                    <li>
+                        <a class="<%= path === '/borrow-history' ? 'active' : '' %>" href="/borrow-history">Borrowed History</a>
+                    </li>
+                    <li>
+                        <a class="<%= path === '/admin/add-resource' ? 'active' : '' %>" href="/admin/add-resource">Add Resource</a>
+                    </li>
+                    <li>
+                        <a class="<%= path === '/admin/resources' ? 'active' : '' %>" href="/admin/resources">Admin Resources</a>
+                    </li>
+                <% } %>
+            </ul>
+            <ul class="list">
+                <% if (!isAuthenticated) { %>
+                    <li style="margin-right: 15px;">
+                        <a class="<%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
+                    </li>
+                    <li>
+                        <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup">Signup</a>
+                    </li>
+                <% } %>
+                <% if (isAuthenticated) { %>
+                    <form action="/logout" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button class="btn" style="color: bisque;" type="submit">Logout</button>
+                    </form>
+                <% } %>
+            </ul>
+        </nav>
+    </header>

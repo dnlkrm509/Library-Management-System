@@ -1,0 +1,27 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+    <main>
+        <% if (resources.length <= 0) { %>
+            <h1>No Resource Found!</h1>
+        <% } else { %>
+            <div class="item-grid">
+                <% resources.forEach(resource => { %>
+                    <div class="item">
+                        <h3><%= resource.title %></h3>
+                        <p><strong>Author:</strong> <%= resource.author %></p>
+                        <p><strong>Year:</strong> <%= resource.publicationYear %></p>
+                        <p><strong>Genre:</strong> <%= resource.genre %></p>
+                        <div class="buttons">
+                            <a class="btn" href="/admin/edit-resource/<%= resource._id %>?edit=true">Edit</a>
+                            <form action="/admin/delete-resource" method="POST">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" name="resourceId" value="<%= resource._id %>">
+                                <button type="submit" class="btn">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+    </main>
+<%- include('../includes/end.ejs') %>

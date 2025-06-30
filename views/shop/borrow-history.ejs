@@ -1,0 +1,27 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+    <main>
+        <% if (returneds.length <= 0) { %>
+            <h1>No Resource Found!</h1>
+        <% } else { %>
+            <% returneds.forEach(returned => { %>
+                <h1># <%= returned._id %> - <a href="/borrow-history/<%= returned._id %>">Invoice</a></h1>
+                <div class="item-grid">
+                    <% returned.resources.forEach(resource => { %>
+                        <% if (resource) { %>
+                            <div class="item">
+                                <h3><%= resource.title %></h3>
+                                <p><strong>Author:</strong> <%= resource.author %></p>
+                                <p><strong>Year:</strong> <%= resource.publicationYear %></p>
+                                <p><strong>Genre:</strong> <%= resource.genre %></p>
+                                <p><strong>Returned Date:</strong> <%= resource.returnedDate %></p>
+                            </div>
+                        <% } %>
+                    <% }); %>
+                </div>
+                <br>
+                <hr>
+            <% }); %>
+        <% } %>
+    </main>
+<%- include('../includes/end.ejs') %>

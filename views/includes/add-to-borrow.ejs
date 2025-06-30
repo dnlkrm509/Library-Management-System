@@ -1,0 +1,27 @@
+<% if (loggedInUser) { %>
+    <% const hasResource = loggedInUser.borrowedItems.resources.find(userResource => userResource.resourceId.toString() === resource._id.toString()); %>
+
+    <% if (hasResource === undefined) { %>
+        <% if (resource.availableStatus) { %>
+            <form action="/borrow" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="resourceId" value="<%= resource._id %>">
+                <input type="hidden" name="returned" value="false">
+                <button type="submit" class="btn">Borrow</button>
+            </form>
+        <% } else { %>
+            <p style="color: red; margin-top: 0.75rem;">Item is not available</p>
+        <% } %>
+    <% } else { %>
+        <% if (resource.availableStatus) { %>
+            <form action="/borrow" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="resourceId" value="<%= resource._id %>">
+                <input type="hidden" name="returned" value="false">
+                <button type="submit" class="btn">Borrow</button>
+            </form>
+        <% } else { %>
+            <a href="/checkout?resourceId=<%= resource._id %>&returned=true" class="btn">Return</a>
+        <% } %>
+    <% } %>
+<% } %>

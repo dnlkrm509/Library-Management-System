@@ -1,0 +1,37 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+    <main>
+        <% if (resources.length <= 0) { %>
+            <h1>No Resource Found!</h1>
+        <% } else { %>
+            <div class="item-grid">
+                <% resources.forEach(resource => { %>
+                    <div class="item">
+                        <h3>
+                            <%= resource.title %>
+                            <hr>
+                            <h5>Due Date: <%= resource.dueDate %></h5>
+                        </h3>
+                        <p><strong>Author:</strong> <%= resource.author %></p>
+                        <p><strong>Year:</strong> <%= resource.publicationYear %></p>
+                        <p><strong>Genre:</strong> <%= resource.genre %></p>
+                        <p><strong>Tota Price:</strong> <%= total %></p>
+                        <div class="buttons">
+                            <button id="checkout-btn" class="btn">Order Now</button>
+                            <script src="https://js.stripe.com/v3/"></script>
+                            <script>
+                                const stripe = Stripe('pk_test_51RfkhNG4Zi54PiYY4luOihcrh2KJSbMnL7yHrmNbHUJSBmxhCW2lk3EUjggmIj3T73cimKfhw4GymZ1gbYCphIbQ00oYpOCtl0');
+                                const checkoutBtn = document.getElementById('checkout-btn');
+                                checkoutBtn.addEventListener('click', () => {
+                                    stripe.redirectToCheckout({
+                                        sessionId: '<%= sessionId %>'
+                                    });
+                                })
+                            </script>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+    </main>
+<%- include('../includes/end.ejs') %>

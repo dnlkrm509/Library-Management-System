@@ -1,0 +1,54 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+    <main>
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>
+        <form class="add-resource-form" action="/admin/<% if (!editing) { %>add-resource<% } else { %>edit-resource<% } %>" method="POST">
+            <div class="input-div">
+                <label for="title">Title</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.path === 'title') ? 'invalid' : '' %>"
+                    type="text" 
+                    name="title" 
+                    id="title" 
+                    value="<% if (editing || hasError) { %><%= resource.title %><% } %>">
+            </div>
+            <div class="input-div">
+                <label for="author">Author</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.path === 'author') ? 'invalid' : '' %>"
+                    type="text" 
+                    name="author" 
+                    id="author" 
+                    value="<% if (editing || hasError) { %><%= resource.author %><% } %>">
+            </div>
+            <div class="input-div">
+                <label for="year">Publication Year</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.path === 'year') ? 'invalid' : '' %>"
+                    type="number" 
+                    name="year" 
+                    id="year" 
+                    value="<% if (editing || hasError) { %><%= resource.publicationYear %><% } %>">
+            </div>
+            <div class="input-div">
+                <label for="genre">Genre</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.path === 'genre') ? 'invalid' : '' %>"
+                    type="text" 
+                    name="genre" 
+                    id="genre" 
+                    value="<% if (editing || hasError) { %><%= resource.genre %><% } %>">
+            </div>
+            <% if (editing) { %>
+                <input type="hidden" name="resourceId" value="<%= resource._id %>">
+                <input type="hidden" name="availableStatus" value="<%= resource.availableStatus %>">
+            <% } %>
+            <div>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="btn"><% if (!editing) { %>Add Resource<% } else { %>Update Resource<% } %></button>
+            </div>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>
