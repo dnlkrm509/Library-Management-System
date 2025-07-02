@@ -33,7 +33,7 @@ router.post('/add-resource',
 
 router.get('/resources', isAuth, adminController.getResources);
 
-router.post('/delete-resource', isAuth, adminController.postDeleteResource);
+router.delete('/resource/:resourceId', isAuth, adminController.deleteResource);
 
 router.get('/edit-resource/:resourceId', isAuth, adminController.getEditResource);
 

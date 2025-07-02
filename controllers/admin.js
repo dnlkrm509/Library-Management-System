@@ -144,16 +144,14 @@ exports.postEditResource = (req, res, next) => {
     });
 };
 
-exports.postDeleteResource = (req, res, next) => {
-    const resourceId = req.body.resourceId;
+exports.deleteResource = (req, res, next) => {
+    const resourceId = req.params.resourceId;
     Resource.deleteByResourceIdANDUserId(resourceId, req.user._id.toString())
     .then(resource => {
         console.log('Destroyed resource!')
-        res.redirect('/admin/resources')
+        res.status(200).json({ message: 'Resource deleted.' });
     })
     .catch(err => {
-        const error = new Error(err);
-        error.httpStatusCode = 500;
-        return next(error);
+        res.status(500).json({ message: 'Deleting resource failed.' });
     });
 }
