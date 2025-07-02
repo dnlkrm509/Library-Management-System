@@ -21,7 +21,11 @@ exports.getResources = (req, res, next) => {
             loggedInUser: req.user
         })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.getResource = (req, res, next) => {
@@ -35,6 +39,11 @@ exports.getResource = (req, res, next) => {
             loggedInUser: req.user
         })
     })
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.getBorrow = (req, res, next) => {
@@ -115,6 +124,11 @@ exports.getCheckout = (req, res, next) => {
             sessionId: session.id
         })
     })
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.getCheckoutSuccess = (req, res, next) => {
@@ -134,7 +148,11 @@ exports.getCheckoutSuccess = (req, res, next) => {
             res.redirect('/borrow');
         }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.getBorrowedHistory = (req, res, next) => {
@@ -153,10 +171,10 @@ exports.getInvoice = (req, res, next) => {
     BorrowedHistory.findByID(borrowHistoryId)
     .then(BH => {
         if (!BH) {
-            return res.redirect('/borrow-history');
+            return next(new Error('No resource found.'));
         }
         if (BH.user._id.toString() !== req.user._id.toString()) {
-            return res.redirect('/borrow-history');
+            return next(new Error('Unauthorized'));
         }
 
         const invoiceName = 'invoice-' + borrowHistoryId + '.pdf';
@@ -307,5 +325,9 @@ exports.getInvoice = (req, res, next) => {
         pdfDoc.end();
 
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };

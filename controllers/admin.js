@@ -43,7 +43,11 @@ exports.postAddResource = (req, res, next) => {
         console.log('New Resource Created!');
         res.redirect('/admin/resources');
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.getResources = (req, res, next) => {
@@ -55,7 +59,11 @@ exports.getResources = (req, res, next) => {
             resources: resources
         })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.getEditResource = (req, res, next) => {
@@ -77,7 +85,11 @@ exports.getEditResource = (req, res, next) => {
             validationErrors: []
         });
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.postEditResource = (req, res, next) => {
@@ -119,10 +131,17 @@ exports.postEditResource = (req, res, next) => {
             console.log('updated resource');
             res.redirect('/admin/resources');
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
     })
-    .catch(err => console.log(err));
-    
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.postDeleteResource = (req, res, next) => {
@@ -132,5 +151,9 @@ exports.postDeleteResource = (req, res, next) => {
         console.log('Destroyed resource!')
         res.redirect('/admin/resources')
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 }

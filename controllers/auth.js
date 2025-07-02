@@ -109,9 +109,17 @@ exports.postLogin = (req, res, next) => {
                 validationErrors: [{ path: 'password' }]
             });
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.postSignup = (req, res, next) => {
@@ -149,7 +157,11 @@ exports.postSignup = (req, res, next) => {
             html: '<h1>Hello</h1><p>You successfully signed up!</p>'
         });
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.postLogout = (req, res, next) => {
@@ -203,7 +215,11 @@ exports.postReset = (req, res, next) => {
             `
             });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
     })
 };
 
@@ -231,7 +247,11 @@ exports.getNewPassword = (req, res, next) => {
             userId: user._id.toString()
         });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.postNewPassword = (req, res, next) => {
@@ -264,5 +284,9 @@ exports.postNewPassword = (req, res, next) => {
             `
         });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
