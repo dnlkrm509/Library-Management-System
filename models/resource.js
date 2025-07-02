@@ -54,13 +54,18 @@ class Resource {
         .catch(err => console.log(err))
     }
 
-    static fetchAll() {
+    static fetchAll(page, itemsPerPage) {
         const db = getDb();
-        return db
-        .collection('resources')
-        .find().toArray()
-        .then(result => {
-            return result
+        return Promise.all([
+            db.collection('resources').countDocuments(),
+            db.collection('resources')
+            .find()
+            .skip((page - 1) * itemsPerPage)
+            .limit(itemsPerPage)
+            .toArray()
+        ])
+        .then(([ itemsCount, resources]) => {
+            return { resources, itemsCount }
         })
         .catch(err => console.log(err))
     }

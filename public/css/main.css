@@ -139,6 +139,26 @@ h5 {
     border-color: red;
 }
 
+.pagination {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.pagination a {
+    text-decoration: none;
+    padding: 0.5rem;
+    margin: 0 1rem;
+    border: 1px solid green;
+    color: green;
+}
+
+.pagination a:hover,
+.pagination a:active,
+.pagination a.active {
+    background-color: green;
+    color: white;
+}
+
 @media (max-width: 900px) {
     .item-grid {
         grid-template-columns: repeat(3, 1fr);

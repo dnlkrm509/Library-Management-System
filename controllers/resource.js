@@ -10,15 +10,25 @@ const PDFDocument = require('pdfkit');
 const Resource = require('../models/resource');
 const BorrowedHistory = require('../models/borrowedHistory');
 
+const ITEMS_PER_PAGE = 2;
 
 exports.getResources = (req, res, next) => {
-    Resource.fetchAll()
-    .then(resources => {
+    const page = +req.query.page || 1;
+
+    Resource.fetchAll(page, ITEMS_PER_PAGE)
+    .then(resourceData => {
+        console.log(resourceData)
         res.render('shop/resources', {
             pageTitle: 'Resources',
             path: '/resources',
-            resources: resources,
-            loggedInUser: req.user
+            resources: resourceData.resources,
+            loggedInUser: req.user,
+            previousPage: page - 1,
+            currentPage: page,
+            nextPage: page + 1,
+            lastPage: Math.ceil(resourceData.itemsCount / ITEMS_PER_PAGE),
+            hasPreviousPage: page > 1,
+            hasNextPage: (page * ITEMS_PER_PAGE) < resourceData.itemsCount
         })
     })
     .catch(err => {
@@ -55,6 +65,11 @@ exports.getBorrow = (req, res, next) => {
             resources
         })
     })
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.postBorrow = (req, res, next) => {
@@ -72,7 +87,11 @@ exports.postBorrow = (req, res, next) => {
             res.redirect('/borrow');
         }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.getCheckout = (req, res, next) => {
@@ -164,6 +183,11 @@ exports.getBorrowedHistory = (req, res, next) => {
             returneds
         })
     })
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.getInvoice = (req, res, next) => {
@@ -186,7 +210,6 @@ exports.getInvoice = (req, res, next) => {
         pdfDoc.pipe(fs.createWriteStream(invoicePath));
         pdfDoc.pipe(res);
 
-        console.log(BH)
 
         // 📄 Write multiple lines into the PDF
         pdfDoc.fontSize(20).text('Invoice', { underline: true });

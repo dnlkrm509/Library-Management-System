@@ -20,6 +20,10 @@
                     </div>
                 <% }); %>
             </div>
+            <%- include('../includes/pagination.ejs', {
+                previousPage: previousPage, currentPage: currentPage, nextPage: nextPage, lastPage: lastPage,
+                hasPreviousPage: hasPreviousPage, hasNextPage: hasNextPage
+            }) %>
         <% } %>
     </main>
 <%- include('../includes/end.ejs') %>
